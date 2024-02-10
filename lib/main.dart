@@ -1,4 +1,7 @@
+import 'package:basketballpointscounterapp/cubit/counter_cubit.dart';
+import 'package:basketballpointscounterapp/cubit/counter_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,202 +12,190 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: MyHomePage(),
-      debugShowCheckedModeBanner: false,
+    return BlocProvider(
+      create: (context) => CounterCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: HomePage(),
+      ),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatelessWidget {
+  HomePage({super.key});
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  
 
-class _MyHomePageState extends State<MyHomePage> {
-  late var teamA = 0;
+  Color selectedcolor = const Color.fromARGB(156, 222, 234, 100);
 
-  var teamB = 0;
-  Color selected_color = const Color.fromARGB(156, 222, 234, 100);
-  Color wh = Colors.black;
-  Color b = Colors.white;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: selected_color,
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Points Counter ',
-              style:
-                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-            ),
-            Icon(Icons.sports_basketball_rounded),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  children: [
-                    const Text(
-                      "Team A",
-                      style: TextStyle(fontSize: 32),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      teamA.toString(),
-                      style: const TextStyle(fontSize: 100),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamA = teamA + 1;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 1 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamA = teamA + 2;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 2 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamA = teamA + 3;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 3 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 500,
-                  child: VerticalDivider(
-                    thickness: 1,
-                    indent: 50,
-                    endIndent: 50,
-                    color: Colors.grey,
-                  ),
-                ),
-                Column(
-                  children: [
-                    const Text(
-                      "Team B",
-                      style: TextStyle(fontSize: 32),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      teamB.toString(),
-                      style: const TextStyle(fontSize: 100),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamB = teamB + 1;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 1 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamB = teamB + 2;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 2 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          teamB = teamB + 3;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: selected_color,
-                      ),
-                      child: Text(
-                        "Add 3 point",
-                        style: TextStyle(fontSize: 18, color: wh),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(
-                  () {
-                    teamA = 0;
-                    teamB = 0;
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: selected_color,
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10)),
-              child: Text(
-                "Reset",
-                style: TextStyle(fontSize: 18, color: wh),
+    return BlocConsumer<CounterCubit, CounterState>(builder: (context, state) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: selectedcolor,
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Points Counter ',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
-            )
-          ],
+              Icon(Icons.sports_basketball_rounded),
+            ],
+          ),
         ),
-      ),
-    );
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      const Text(
+                        "Team A",
+                        style: TextStyle(fontSize: 32),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        '${BlocProvider.of<CounterCubit>(context).teamACounter}',
+                        style: const TextStyle(fontSize: 100),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamAIncreament(buttonNumber: 1);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 1 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamAIncreament(buttonNumber: 2);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 2 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamAIncreament(buttonNumber: 3);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 3 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 500,
+                    child: VerticalDivider(
+                      thickness: 1,
+                      indent: 50,
+                      endIndent: 50,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      const Text(
+                        "Team B",
+                        style: TextStyle(fontSize: 32),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        '${BlocProvider.of<CounterCubit>(context).teamBCounter}',
+                        style: const TextStyle(fontSize: 100),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamBIncreament(buttonNumber: 1);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 1 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamBIncreament(buttonNumber: 2);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 2 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          BlocProvider.of<CounterCubit>(context)
+                              .teamBIncreament(buttonNumber: 3);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: selectedcolor,
+                        ),
+                        child: const Text(
+                          "Add 3 point",
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: selectedcolor,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 10)),
+                child: const Text(
+                  "Reset",
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
+    }, listener: (context, state) {
+      
+    });
   }
 }
